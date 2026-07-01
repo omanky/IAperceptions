@@ -3,954 +3,787 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Promesa y amenaza · Percepciones sobre IA en el Perú urbano</title>
+<title>IA en el Perú urbano · Trabajo, ambivalencia y desconexión</title>
 <meta name="author" content="Omar Manky">
-<meta name="description" content="Análisis de la primera encuesta nacional representativa con un módulo sobre inteligencia artificial en el Perú urbano. Por Omar Manky.">
-
-<!-- Open Graph / Twitter Card. Para una tarjeta con vista previa, dejar preview.png
-     (1200×630) junto al HTML; idealmente, una captura del dot plot o del 50,7 %. -->
-<meta property="og:title" content="Promesa y amenaza · Percepciones sobre IA en el Perú urbano">
-<meta property="og:description" content="Primera encuesta nacional representativa con un módulo sobre inteligencia artificial en el Perú urbano. Por Omar Manky.">
-<meta property="og:image" content="preview.png">
-<meta property="og:type" content="article">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Promesa y amenaza · Percepciones sobre IA en el Perú urbano">
-<meta name="twitter:description" content="Primera encuesta nacional representativa con un módulo sobre inteligencia artificial en el Perú urbano. Por Omar Manky.">
-<meta name="twitter:image" content="preview.png">
-
+<meta name="description" content="Visualización clara sobre percepciones de la inteligencia artificial en el Perú urbano a partir de la ENPSCyT 2024.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;650;750&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #fafaf7;
-    --ink: #1b1b1b;
-    --ink-soft: #3a3a3a;
-    --ink-mute: #6a6a6a;
-    --rule: #cfcdc4;
-    --grid: #e6e3d8;
-    --accent: #3d6b4d;          /* verde bosque, reservado para cifras memorables */
-    --accent-soft: #9bb1a3;
-    --risk: #9c5b3b;            /* terracota apagado, solo para riesgo/Crítico */
-    --risk-soft: #c19a83;
-    --serif: "EB Garamond", "et-book", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    --paper:#fbfaf5;
+    --panel:#f2efe7;
+    --ink:#171817;
+    --soft:#494c48;
+    --muted:#74786f;
+    --rule:#d7d1c3;
+    --grid:#e7e0d2;
+    --benefit:#2f6f73;
+    --risk:#b35d45;
+    --ambiv:#6f5aa8;
+    --distant:#6f7780;
+    --optimist:#2f7f4f;
+    --warn:#c08a28;
+    --sans:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --serif:"Literata", Georgia, serif;
   }
-  *{ box-sizing: border-box; }
-  html, body{ margin:0; padding:0; height:100%; }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
   body{
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--serif);
-    font-feature-settings: "onum","kern","liga";
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow: hidden;
+    margin:0;
+    color:var(--ink);
+    background:var(--paper);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
   }
-
-  /* ---------- Slide deck: una lámina por pantalla ---------- */
-  .deck{ position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-  .slide{
-    position: absolute; inset: 0;
-    display: none;
-    overflow-y: auto;
-    padding: 48px 72px 80px;
+  ::selection{ background:#d9eadc; }
+  a{ color:inherit; text-decoration-color:rgba(47,111,115,.45); text-underline-offset:3px; }
+  a:hover{ color:var(--benefit); }
+  .progress{
+    position:fixed;
+    inset:0 auto auto 0;
+    width:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--benefit),var(--risk),var(--ambiv));
+    z-index:20;
   }
-  .slide.active{ display: block; }
+  .shell{
+    display:grid;
+    grid-template-columns:minmax(160px,220px) minmax(0,1fr);
+    max-width:1360px;
+    margin:0 auto;
+  }
+  .rail{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    padding:28px 22px;
+    border-right:1px solid var(--rule);
+    background:rgba(251,250,245,.92);
+    backdrop-filter:blur(12px);
+  }
+  .brand{
+    font-family:var(--serif);
+    font-size:1.05rem;
+    line-height:1.2;
+    margin:0 0 28px;
+  }
+  .brand span{ color:var(--muted); font-style:italic; }
+  nav{ display:grid; gap:7px; }
+  nav a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:30px;
+    color:var(--muted);
+    font-size:.8rem;
+    text-decoration:none;
+  }
+  nav a::before{
+    content:"";
+    width:8px;
+    height:8px;
+    border:1px solid currentColor;
+    border-radius:50%;
+    flex:0 0 auto;
+  }
+  nav a.active,
+  nav a:hover{ color:var(--ink); }
+  nav a.active::before{ background:currentColor; }
+  .rail-note{
+    position:absolute;
+    bottom:28px;
+    left:22px;
+    right:22px;
+    color:var(--muted);
+    font-size:.72rem;
+    line-height:1.45;
+  }
+  main{ min-width:0; }
+  section{
+    min-height:100vh;
+    padding:84px clamp(22px,5vw,76px);
+    border-bottom:1px solid var(--rule);
+  }
   .inner{
-    max-width: 1080px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    column-gap: 36px;
+    max-width:1060px;
+    margin:0 auto;
   }
-
-  .sidenote{
-    grid-column: 1;
-    font-size: 0.78rem;
-    line-height: 1.45;
-    color: var(--ink-mute);
-    font-style: italic;
-    padding-top: 0.25em;
+  .narrow{ max-width:760px; }
+  .kicker{
+    margin:0 0 12px;
+    color:var(--muted);
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-weight:650;
   }
-  .body{ grid-column: 2; max-width: 640px; }
-  .full{ grid-column: 1 / -1; max-width: none; }
-  .wide{ grid-column: 2; max-width: 820px; }
-
-  .eyebrow{
-    grid-column: 2;
-    font-size: 0.74rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    font-style: normal;
-    margin: 0 0 10px;
-  }
+  h1,h2,h3,p{ margin-top:0; }
   h1{
-    font-weight: 500;
-    font-size: clamp(34px, 4.5vw, 54px);
-    line-height: 1.1;
-    margin: 0 0 18px;
-    letter-spacing: -0.005em;
+    max-width:720px;
+    margin-bottom:22px;
+    font-family:var(--serif);
+    font-size:clamp(44px,6.6vw,88px);
+    line-height:.98;
+    font-weight:500;
+    letter-spacing:0;
   }
   h2{
-    font-weight: 500;
-    font-size: 1.75rem;
-    line-height: 1.18;
-    margin: 0 0 6px;
-    font-style: italic;
+    max-width:840px;
+    margin-bottom:18px;
+    font-family:var(--serif);
+    font-size:clamp(32px,4.7vw,62px);
+    line-height:1.05;
+    font-weight:500;
+    letter-spacing:0;
+  }
+  h3{
+    font-size:1rem;
+    line-height:1.25;
+    margin-bottom:10px;
   }
   .lede{
-    font-size: 1.05rem;
-    color: var(--ink-soft);
-    margin: 0 0 22px;
-    line-height: 1.55;
-    font-style: italic;
-    max-width: 70ch;
+    max-width:760px;
+    color:var(--soft);
+    font-family:var(--serif);
+    font-size:clamp(19px,2.1vw,28px);
+    line-height:1.35;
   }
-  p{ font-size: 1.05rem; line-height: 1.55; margin: 0 0 14px; }
-  p strong{ font-weight: 500; }
-  p em{ font-style: italic; }
-  /* Enlaces de cuerpo en tinta; el verde se reserva para cifras memorables. */
-  a{ color: var(--ink-mute); text-decoration: none; border-bottom: 1px dotted var(--ink-mute); cursor: pointer; }
-  a:hover{ color: var(--accent); border-bottom-color: var(--accent); border-bottom-style: solid; }
-  .lnum{ font-feature-settings: "lnum","tnum"; }
-
-  .frame-line{ font-size: 1.1rem; color: var(--ink); margin: 0 0 18px; max-width: 62ch; }
-  .subtitle{
-    font-size: 1.25rem;
-    color: var(--ink-soft);
-    font-style: italic;
-    margin: 0 0 18px;
-    max-width: 56ch;
+  .bodycopy{
+    max-width:760px;
+    color:var(--soft);
+    font-size:1rem;
   }
-  .byline{
-    grid-column: 1 / -1;
-    font-size: 0.9rem;
-    color: var(--ink-mute);
-    margin: 0 0 26px;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    padding: 8px 0;
-    max-width: 62ch;
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(260px,.8fr);
+    gap:48px;
+    align-items:center;
+    padding-top:4vh;
   }
-  .byline a{ color: var(--ink-mute); border-bottom: 1px dotted var(--ink-mute); }
-  .byline a:hover{ color: var(--accent); border-bottom-color: var(--accent); }
-  .byline .sep{ margin: 0 10px; color: var(--rule); }
-
-  /* ---------- Hero ---------- */
-  .hero-fig{
-    margin: 24px 0 18px;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    padding: 22px 0;
+  .stat-tower{
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:22px 0;
   }
-  .hero-q{
-    font-style: italic;
-    color: var(--ink-soft);
-    font-size: 1rem;
-    margin: 0 0 16px;
-    max-width: 58ch;
+  .question{
+    color:var(--soft);
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.05rem;
+    margin-bottom:18px;
   }
-  .hero-q .qmark{ color: var(--accent); font-style: normal; }
-  .hero-row{ display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
-  .hero-fig .big{
-    font-size: clamp(58px, 8vw, 92px);
-    font-weight: 400;
-    line-height: 0.95;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    font-feature-settings: "lnum";
+  .big-number{
+    display:block;
+    color:var(--risk);
+    font-size:clamp(76px,12vw,150px);
+    line-height:.85;
+    font-weight:750;
+    letter-spacing:0;
+    font-variant-numeric:lining-nums tabular-nums;
   }
-  .hero-fig .big sup{ font-size: 0.45em; top: -1em; }
-  .hero-fig .leg{ font-size: 1.05rem; line-height: 1.45; color: var(--ink); max-width: 38ch; }
-  .hero-fig .leg small{ display: block; margin-top: 8px; color: var(--ink-mute); font-size: 0.78rem; font-style: italic; }
-
-  /* ---------- Gráficos ---------- */
-  figure{ margin: 4px 0 12px; }
-  figcaption{
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: var(--ink-mute);
-    font-style: italic;
-    margin-top: 8px;
-    max-width: 64ch;
+  .big-number small{
+    font-size:.38em;
+    vertical-align:super;
+    font-weight:650;
   }
-  svg{ display: block; overflow: visible; }
-  svg text{ font-family: var(--serif); fill: var(--ink); }
-  svg .lab{ font-size: 11.5px; fill: var(--ink); }
-  svg .lab-mute{ font-size: 11px; fill: var(--ink-mute); }
-  svg .lab-num{ font-size: 11px; fill: var(--ink); font-feature-settings: "lnum","tnum"; }
-  svg .lab-axis{ font-size: 10.5px; fill: var(--ink-mute); }
-  svg .annot{ font-size: 10.5px; fill: var(--ink-soft); font-style: italic; }
-  svg .annot-accent{ font-size: 10.5px; fill: var(--accent); font-style: italic; }
-  svg .rangeframe{ stroke: var(--ink); stroke-width: 0.7; fill: none; }
-  svg .grid{ stroke: var(--grid); stroke-width: 0.5; }
-  svg .ref{ stroke: var(--ink-mute); stroke-width: 0.5; stroke-dasharray: 2 2; }
-  svg .ref-strong{ stroke: var(--ink); stroke-width: 0.7; stroke-dasharray: 3 2; }
-  svg .dot{ fill: var(--ink); }
-  svg .dot-open{ fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
-  svg .conn-accent{ stroke: var(--accent); stroke-width: 1.2; fill: none; }
-
-  /* ---------- Recuadro Ipsos ---------- */
-  .sidebox{
-    grid-column: 2;
-    max-width: 820px;
-    margin: 8px 0 0;
-    padding: 16px 22px;
-    border-left: 2px solid var(--accent-soft);
-    background: rgba(61,107,77,0.04);
-    font-size: 0.92rem;
-    line-height: 1.5;
+  .caption{
+    color:var(--muted);
+    font-size:.82rem;
+    line-height:1.55;
   }
-  .sidebox h3{
-    margin: 0 0 8px;
-    font-size: 0.95rem;
-    font-style: italic;
-    font-weight: 500;
-    color: var(--accent);
+  .source-line{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 18px;
+    margin-top:36px;
+    padding-top:14px;
+    border-top:1px solid var(--rule);
+    color:var(--muted);
+    font-size:.82rem;
   }
-  .sidebox ul{ margin: 0 0 8px; padding-left: 1.1em; }
-  .sidebox li{ margin-bottom: 4px; }
-  .sidebox .src{ display:block; margin-top: 10px; font-size: 0.76rem; color: var(--ink-mute); font-style: italic; }
-
-  /* ---------- Cierre ---------- */
-  .closing p{ font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 56ch; color: var(--ink); margin-bottom: 22px; }
-  .closing .first em{ font-weight: 500; }
-
-  /* ---------- Metodología ---------- */
-  .metodo{ border: 1px solid var(--rule); padding: 26px 30px; background: rgba(0,0,0,0.012); }
-  .metodo h2{ font-style: normal; font-size: 1.25rem; margin-bottom: 16px; }
-  .metodo dl{ margin: 0; display: grid; grid-template-columns: 180px 1fr; row-gap: 10px; column-gap: 18px; }
-  .metodo dt{ font-style: italic; color: var(--ink-soft); font-size: 0.92rem; }
-  .metodo dd{ margin: 0; font-size: 0.95rem; line-height: 1.5; }
-
-  /* ---------- Flechas de navegación ---------- */
-  .navarrow{
-    position: fixed;
-    top: 50%; transform: translateY(-50%);
-    width: 48px; height: 48px;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    color: var(--ink-soft);
-    font-family: var(--serif);
-    font-size: 28px; line-height: 44px;
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: color 0.15s, border-color 0.15s, background 0.15s;
-    z-index: 50;
+  .metrics{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+    margin:32px 0 10px;
   }
-  .navarrow:hover{ color: var(--accent); border-color: var(--accent-soft); }
-  .navarrow.prev{ left: 18px; }
-  .navarrow.next{ right: 18px; }
-  .navarrow:disabled{ opacity: 0.25; cursor: default; }
-
-  .counter{
-    position: fixed;
-    bottom: 18px; right: 22px;
-    font-size: 0.78rem;
-    color: var(--ink-mute);
-    font-style: italic;
-    font-feature-settings: "lnum","tnum";
-    z-index: 50;
+  .metric{
+    padding:16px 0;
+    border-top:1px solid var(--rule);
   }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 880px){
-    body{ overflow: auto; }
-    .deck{ height: auto; }
-    .slide{ position: relative; padding: 28px 18px 60px; height: auto; }
-    .inner{ grid-template-columns: 1fr; }
-    .sidenote, .body, .full, .wide, .eyebrow, .sidebox{ grid-column: 1; max-width: none; }
-    .sidenote{ margin-top: 6px; padding: 8px 12px; border-left: 2px solid var(--rule); }
-    .metodo dl{ grid-template-columns: 1fr; row-gap: 4px; }
-    .metodo dt{ margin-top: 8px; }
-    .navarrow{ width: 38px; height: 38px; font-size: 22px; }
+  .metric b{
+    display:block;
+    margin-bottom:4px;
+    font-size:1.65rem;
+    line-height:1;
+    font-variant-numeric:lining-nums tabular-nums;
+  }
+  .metric span{ color:var(--muted); font-size:.82rem; }
+  .viz-wrap{
+    margin-top:36px;
+    padding:28px 0 6px;
+    border-top:1px solid var(--rule);
+  }
+  .split{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,.72fr);
+    gap:42px;
+    align-items:start;
+  }
+  .callout{
+    padding:22px;
+    border-left:4px solid var(--benefit);
+    background:color-mix(in srgb, var(--benefit) 7%, transparent);
+  }
+  .callout.risk{
+    border-left-color:var(--risk);
+    background:color-mix(in srgb, var(--risk) 7%, transparent);
+  }
+  .callout.dist{
+    border-left-color:var(--distant);
+    background:color-mix(in srgb, var(--distant) 8%, transparent);
+  }
+  .callout p:last-child{ margin-bottom:0; }
+  .bars{ display:grid; gap:11px; }
+  .bar-row{
+    display:grid;
+    grid-template-columns:minmax(130px,320px) 1fr 54px;
+    gap:12px;
+    align-items:center;
+    min-height:28px;
+  }
+  .bar-label{
+    color:var(--soft);
+    font-size:.88rem;
+    line-height:1.25;
+  }
+  .bar-track{
+    position:relative;
+    height:10px;
+    background:var(--grid);
+    overflow:hidden;
+  }
+  .bar-fill{
+    width:0;
+    height:100%;
+    background:var(--risk);
+    transition:width 1.1s cubic-bezier(.2,.7,.1,1);
+  }
+  .bar-row.benefit .bar-fill{ background:var(--benefit); }
+  .bar-row.muted .bar-fill{ background:var(--muted); }
+  .bar-value{
+    font-size:.85rem;
+    font-weight:650;
+    font-variant-numeric:tabular-nums;
+  }
+  .inview .bar-fill{ width:calc(var(--v) * 1%); }
+  .matrix{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+    border:1px solid var(--rule);
+    background:var(--rule);
+  }
+  .quad{
+    min-height:156px;
+    padding:20px;
+    background:var(--paper);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .quad strong{
+    font-size:1.05rem;
+    color:var(--ink);
+  }
+  .quad b{
+    font-size:2.6rem;
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .quad p{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-size:.84rem;
+  }
+  .q-optimista{ border-top:5px solid var(--optimist); }
+  .q-ambivalente{ border-top:5px solid var(--ambiv); }
+  .q-critico{ border-top:5px solid var(--risk); }
+  .q-distante{ border-top:5px solid var(--distant); }
+  .slope{
+    width:100%;
+    min-height:360px;
+  }
+  svg text{
+    font-family:var(--sans);
+    fill:var(--soft);
+    font-size:12px;
+  }
+  svg .axis{ fill:var(--muted); font-size:11px; }
+  svg .num{ fill:var(--ink); font-size:13px; font-weight:650; }
+  svg .grid{ stroke:var(--grid); stroke-width:1; }
+  svg .line{ stroke:var(--ink); stroke-width:2; fill:none; stroke-linecap:round; }
+  svg .risk-line{ stroke:var(--risk); }
+  svg .benefit-line{ stroke:var(--benefit); }
+  .stacked{
+    display:grid;
+    gap:12px;
+  }
+  .stack-row{
+    display:grid;
+    grid-template-columns:120px 1fr 48px;
+    gap:12px;
+    align-items:center;
+  }
+  .stack-name{
+    color:var(--soft);
+    font-size:.85rem;
+  }
+  .stack{
+    display:flex;
+    height:19px;
+    background:var(--grid);
+    overflow:hidden;
+  }
+  .seg{
+    width:0;
+    transition:width 1.1s cubic-bezier(.2,.7,.1,1);
+  }
+  .inview .seg{ width:calc(var(--w) * 1%); }
+  .seg.opt{ background:var(--optimist); }
+  .seg.amb{ background:var(--ambiv); }
+  .seg.cri{ background:var(--risk); }
+  .seg.dis{ background:var(--distant); }
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 18px;
+    margin-top:16px;
+    color:var(--muted);
+    font-size:.8rem;
+  }
+  .legend i{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    margin-right:6px;
+    vertical-align:-1px;
+  }
+  .method{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px 34px;
+    margin-top:28px;
+  }
+  .method dt{
+    color:var(--muted);
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:650;
+  }
+  .method dd{
+    margin:5px 0 0;
+    color:var(--soft);
+  }
+  .fade{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .fade.inview{
+    opacity:1;
+    transform:none;
+  }
+  .delay-1{ transition-delay:.1s; }
+  .delay-2{ transition-delay:.2s; }
+  .delay-3{ transition-delay:.3s; }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .fade,.bar-fill,.seg{ opacity:1; transform:none; transition:none; }
+    .bar-fill{ width:calc(var(--v) * 1%); }
+    .seg{ width:calc(var(--w) * 1%); }
+  }
+  @media (max-width:980px){
+    .shell{ display:block; }
+    .rail{
+      position:sticky;
+      top:0;
+      height:auto;
+      z-index:10;
+      padding:12px 18px;
+      border-right:0;
+      border-bottom:1px solid var(--rule);
+    }
+    .brand,.rail-note{ display:none; }
+    nav{
+      display:flex;
+      gap:14px;
+      overflow:auto;
+      scrollbar-width:none;
+      white-space:nowrap;
+    }
+    nav a::before{ display:none; }
+    section{ padding:70px 20px; min-height:auto; }
+    .hero-grid,.split{ grid-template-columns:1fr; }
+    .metrics{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .bar-row{ grid-template-columns:1fr; gap:5px; }
+    .bar-track{ height:12px; }
+    .stack-row{ grid-template-columns:92px 1fr 38px; }
+    .method{ grid-template-columns:1fr; }
+  }
+  @media (max-width:620px){
+    h1{ font-size:48px; }
+    h2{ font-size:34px; }
+    .metrics{ grid-template-columns:1fr; }
+    .matrix{ grid-template-columns:1fr; }
+    .quad{ min-height:130px; }
+    .stack-row{ grid-template-columns:1fr; }
+    .stack{ height:22px; }
   }
 </style>
 </head>
 <body>
+<div class="progress" id="progress"></div>
 
-<button class="navarrow prev" id="prev" aria-label="Lámina anterior">‹</button>
-<button class="navarrow next" id="next" aria-label="Lámina siguiente">›</button>
-<div class="counter" id="counter"></div>
+<div class="shell">
+  <aside class="rail" aria-label="Navegación de la visualización">
+    <p class="brand">IA en el Perú urbano<br><span>trabajo, ambivalencia y desconexión</span></p>
+    <nav id="nav">
+      <a href="#inicio">Inicio</a>
+      <a href="#laboral">Trabajo</a>
+      <a href="#ocupacion">Ocupación</a>
+      <a href="#perfiles">Perfiles</a>
+      <a href="#informacion">Información</a>
+      <a href="#distantes">Distantes</a>
+      <a href="#territorio">Territorio</a>
+      <a href="#politica">Política</a>
+      <a href="#metodo">Método</a>
+    </nav>
+    <p class="rail-note">ENPSCyT 2024 · n = 3 214 · población urbana adulta · ponderado por Fexp.</p>
+  </aside>
 
-<div class="deck" id="deck">
-
-  <!-- ===================== 1. PORTADA ===================== -->
-  <section class="slide" id="s-portada">
-    <div class="inner">
-      <p class="eyebrow">Percepciones sobre inteligencia artificial · Perú urbano</p>
-      <div class="full">
-        <h1>Promesa y amenaza.</h1>
-        <p class="subtitle">Percepciones sobre inteligencia artificial en el Perú urbano.</p>
-        <p class="byline">
-          Omar Manky <span class="sep">·</span>
-          <a href="mailto:wo.mankyb@up.edu.pe">wo.mankyb@up.edu.pe</a>
-          <span class="sep">·</span> Junio 2026
-        </p>
+  <main>
+    <section id="inicio">
+      <div class="inner hero-grid">
+        <div>
+          <p class="kicker fade">Percepciones sobre inteligencia artificial · Perú urbano</p>
+          <h1 class="fade delay-1">Promesa, amenaza y desconexión.</h1>
+          <p class="lede fade delay-2">La encuesta no dibuja una ciudadanía tecnófoba ni una ciudadanía fascinada. Dibuja cuatro formas de mirar la IA, atravesadas por el trabajo y por la información.</p>
+          <div class="source-line fade delay-3">
+            <span>Omar Manky · junio 2026</span>
+            <a href="mailto:wo.mankyb@up.edu.pe">wo.mankyb@up.edu.pe</a>
+            <a href="https://repositorio.concytec.gob.pe/entities/publication/a930a16c-c35a-4468-9ebd-fd29a55ee0d6" target="_blank" rel="noopener">Encuesta CONCYTEC</a>
+          </div>
+        </div>
+        <div class="stat-tower fade delay-2">
+          <p class="question">“La inteligencia artificial hará que se pierdan más puestos de trabajo”.</p>
+          <span class="big-number count" data-value="50.7">0<small>%</small></span>
+          <p class="caption">de la población urbana adulta marca acuerdo alto (7 a 10). Es la afirmación con mayor adhesión entre los 16 ítems del módulo de IA.</p>
+        </div>
       </div>
-      <div class="body">
-        <p class="frame-line">
-          Este es un análisis de la primera encuesta nacional representativa con un módulo
-          sobre inteligencia artificial en el Perú.
-          <a class="goto" data-target="s-metodologia">metodología</a> &middot;
-          <a href="https://repositorio.concytec.gob.pe/entities/publication/a930a16c-c35a-4468-9ebd-fd29a55ee0d6" target="_blank" rel="noopener">ver la encuesta</a>
-        </p>
-        <p class="frame-line">
-          Se midieron dieciséis afirmaciones sobre inteligencia artificial. Leídas juntas,
-          permiten mapear la ambivalencia de la población peruana frente a nuevas tecnologías.
-        </p>
-        <p><strong>Dos salvedades.</strong></p>
-        <p>
-          <strong>Primero</strong>, la encuesta se realizó hace casi dos años. Para una tecnología
-          como esta, dos años son bastante tiempo, y seguramente cambiaron quiénes la usan y
-          para qué. Aun así, sirve como una primera línea de base.
-        </p>
-        <p>
-          <strong>Segundo</strong>, aunque es representativa del Perú urbano, cabe notar su
-          margen de error. A nivel urbano nacional ronda el <span class="lnum">±2 %</span>, pero a
-          nivel departamental va de <span class="lnum">±6 %</span> a <span class="lnum">±9 %</span>.
-          Conviene leer las cifras con cautela.
-        </p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===================== 2. MAPA DE PERCEPCIONES ===================== -->
-  <section class="slide" id="s-mapa">
-    <div class="inner">
-      <div class="full">
-        <h2>Un mapa de percepciones.</h2>
-        <p class="lede">Ordenados por porcentaje de acuerdo alto (≥ 7), los dieciséis ítems del módulo dejan el temor a perder empleo en lo más alto, por encima de cualquier promesa. En negro, las afirmaciones de riesgo; en blanco, las de beneficio.</p>
-      </div>
-      <div class="sidenote">
-        P37.7 y P37.11 son la pareja conceptual de la pregunta laboral. <i>«Creará nuevos puestos»</i>
-        frente a <i>«hará que se pierdan más puestos»</i>. La distancia entre ambos, dentro de la
-        misma batería, es <span class="lnum">29,4 puntos</span>, el contraste más amplio entre un
-        par positivo y negativo de la encuesta.
-      </div>
-      <figure class="wide">
-        <svg id="chart-p37" viewBox="0 0 760 540" width="100%" role="img" aria-label="Dot plot de los 16 ítems P37 ordenados por porcentaje de acuerdo alto."></svg>
-        <figcaption>
-          Figura 1. Cada punto representa el porcentaje de población urbana adulta con acuerdo alto
-          en la afirmación (escala 1–10, valor ≥ 7), ponderado por <i>F<sub>exp</sub></i>.
-          ● ítems de riesgo &middot; ○ ítems de beneficio. Eje horizontal en el rango observado de
-          los datos (rango-marco de Tufte).
-        </figcaption>
-      </figure>
+    <section id="laboral">
+      <div class="inner">
+        <p class="kicker fade">1 · El dato de apertura</p>
+        <h2 class="fade delay-1">La IA se imagina primero como una pregunta laboral.</h2>
+        <p class="lede fade delay-2">La pérdida de empleo supera al dominio de las máquinas, a la privacidad y a cualquier promesa positiva.</p>
+        <div class="metrics fade delay-3">
+          <div class="metric"><b>50,7 %</b><span>teme pérdida de empleo</span></div>
+          <div class="metric"><b>21,3 %</b><span>cree que creará empleos</span></div>
+          <div class="metric"><b>29,4 pp</b><span>brecha entre ambos ítems laborales</span></div>
+          <div class="metric"><b>12,2 %</b><span>cree ambas cosas a la vez</span></div>
+        </div>
 
-      <div class="hero-fig wide" style="margin-top: 18px; padding: 16px 0;">
-        <p class="hero-q" style="margin-bottom: 10px;">
-          <span class="qmark">P37.11.</span> <i>«la inteligencia artificial hará que se pierdan
-          más puestos de trabajo».</i>
-        </p>
-        <div class="hero-row">
-          <div class="big lnum" style="font-size: clamp(44px, 5.5vw, 64px);">50,7<sup>%</sup></div>
-          <div class="leg">
-            de la población urbana adulta da su <em>acuerdo alto</em> (≥ 7) a esa afirmación.
-            Es la de mayor adhesión de las dieciséis.
-            <small>Media ponderada: 6,79. Ponderado por <i>F<sub>exp</sub></i>.</small>
+        <div class="viz-wrap fade" data-chart="bars">
+          <div class="bars" aria-label="Ranking de ítems de IA por acuerdo alto">
+            <div class="bar-row" style="--v:50.7"><div class="bar-label">Perderán puestos de trabajo</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">50,7</div></div>
+            <div class="bar-row" style="--v:44.3"><div class="bar-label">Dominio de máquinas sobre humanos</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">44,3</div></div>
+            <div class="bar-row" style="--v:39.5"><div class="bar-label">Controlará la vida privada</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">39,5</div></div>
+            <div class="bar-row" style="--v:30.5"><div class="bar-label">Mejora la calidad de vida</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">30,5</div></div>
+            <div class="bar-row" style="--v:29.4"><div class="bar-label">Generará más problemas que soluciones</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">29,4</div></div>
+            <div class="bar-row benefit" style="--v:28.3"><div class="bar-label">Favorece el crecimiento económico</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">28,3</div></div>
+            <div class="bar-row benefit" style="--v:27.3"><div class="bar-label">Permitirá tomar mejores decisiones</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">27,3</div></div>
+            <div class="bar-row benefit" style="--v:21.3"><div class="bar-label">Creará nuevos puestos de trabajo</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">21,3</div></div>
+            <div class="bar-row benefit" style="--v:18.2"><div class="bar-label">Resolverá problemas que no podríamos</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">18,2</div></div>
+          </div>
+          <p class="caption">Porcentaje con acuerdo alto, valores 7 a 10 en escala de 1 a 10. El color terracota marca ítems de riesgo y el verde marca ítems de beneficio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ocupacion">
+      <div class="inner split">
+        <div>
+          <p class="kicker fade">2 · Trabajo</p>
+          <h2 class="fade delay-1">El temor no se concentra en los manuales.</h2>
+          <p class="lede fade delay-2">Las cifras más altas aparecen en comercio, servicios, profesionales y oficinistas. El miedo sigue la exposición percibida al trabajo de oficina automatizable.</p>
+          <div class="viz-wrap fade" data-chart="bars">
+            <div class="bars">
+              <div class="bar-row" style="--v:55.6"><div class="bar-label">Comercio y servicios</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">55,6</div></div>
+              <div class="bar-row" style="--v:54.3"><div class="bar-label">Profesional / oficinista</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">54,3</div></div>
+              <div class="bar-row muted" style="--v:51.7"><div class="bar-label">Ama de casa</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">51,7</div></div>
+              <div class="bar-row muted" style="--v:50.4"><div class="bar-label">Inactivo / desempleado</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">50,4</div></div>
+              <div class="bar-row muted" style="--v:48.4"><div class="bar-label">Manual / industrial</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">48,4</div></div>
+              <div class="bar-row muted" style="--v:46.0"><div class="bar-label">Estudiante</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">46,0</div></div>
+              <div class="bar-row muted" style="--v:43.8"><div class="bar-label">Jubilado</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">43,8</div></div>
+            </div>
+            <p class="caption">% con acuerdo alto en P37.11, por grupo ocupacional. Promedio urbano nacional: 50,7 %.</p>
+          </div>
+        </div>
+        <aside class="callout risk fade delay-2">
+          <h3>Lectura sociológica</h3>
+          <p>La amenaza no se ordena por manualidad. Se concentra donde la IA generativa parece más cercana al puesto de trabajo: atención, comercio, oficina, gestión, servicios profesionales.</p>
+          <p class="caption">El logit exploratorio del material base muestra que la edad y la educación elevan la probabilidad de alto temor laboral; ser jubilado reduce esa probabilidad de manera robusta.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="perfiles">
+      <div class="inner">
+        <p class="kicker fade">3 · Ambivalencia</p>
+        <h2 class="fade delay-1">Beneficios y riesgos no son polos opuestos.</h2>
+        <p class="lede fade delay-2">Los índices de beneficios y riesgos percibidos son prácticamente independientes: r = -0,01. De ahí salen cuatro perfiles de tamaño parecido.</p>
+        <div class="matrix fade delay-3" aria-label="Matriz de perfiles de percepción de la IA">
+          <div class="quad q-critico">
+            <div><strong>Críticos</strong><p>Riesgos altos, beneficios bajos.</p></div>
+            <b>26,6 %</b>
+          </div>
+          <div class="quad q-ambivalente">
+            <div><strong>Ambivalentes</strong><p>Riesgos altos y beneficios altos.</p></div>
+            <b>23,4 %</b>
+          </div>
+          <div class="quad q-distante">
+            <div><strong>Distantes</strong><p>Riesgos bajos, beneficios bajos.</p></div>
+            <b>24,7 %</b>
+          </div>
+          <div class="quad q-optimista">
+            <div><strong>Optimistas</strong><p>Beneficios altos, riesgos bajos.</p></div>
+            <b>25,4 %</b>
+          </div>
+        </div>
+        <p class="bodycopy fade" style="margin-top:24px;">La tipología no dice que la gente entre en casillas fijas. Sirve para leer una estructura: hay un cuarto crítico, un cuarto distante, un cuarto optimista y casi un cuarto que reconoce promesa y amenaza al mismo tiempo.</p>
+      </div>
+    </section>
+
+    <section id="informacion">
+      <div class="inner split">
+        <div>
+          <p class="kicker fade">4 · Información</p>
+          <h2 class="fade delay-1">Saber más no vuelve a la gente más negativa.</h2>
+          <p class="lede fade delay-2">La ambivalencia sigue siendo importante, pero el cruce corregido entre P35 y P36 cambia la lectura: quienes dicen conocer más la IA declaran una valoración global más positiva, no más negativa.</p>
+          <div class="viz-wrap fade" data-chart="bars">
+            <h3>Perfil ambivalente por consumo de información científica</h3>
+            <div class="bars">
+              <div class="bar-row" style="--v:19.7"><div class="bar-label">ICIC bajo</div><div class="bar-track"><div class="bar-fill" style="background:var(--ambiv)"></div></div><div class="bar-value">19,7</div></div>
+              <div class="bar-row" style="--v:26.8"><div class="bar-label">ICIC medio</div><div class="bar-track"><div class="bar-fill" style="background:var(--ambiv)"></div></div><div class="bar-value">26,8</div></div>
+              <div class="bar-row" style="--v:32.7"><div class="bar-label">ICIC alto</div><div class="bar-track"><div class="bar-fill" style="background:var(--ambiv)"></div></div><div class="bar-value">32,7</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="fade delay-2">
+          <svg class="slope" viewBox="0 0 520 360" role="img" aria-label="Valoracion positiva literal de la IA por conocimiento autopercibido">
+            <line class="grid" x1="56" y1="292.0" x2="472" y2="292.0"></line>
+            <text class="axis" x="40" y="296.0" text-anchor="end">0</text>
+            <line class="grid" x1="56" y1="232.0" x2="472" y2="232.0"></line>
+            <text class="axis" x="40" y="236.0" text-anchor="end">25</text>
+            <line class="grid" x1="56" y1="172.0" x2="472" y2="172.0"></line>
+            <text class="axis" x="40" y="176.0" text-anchor="end">50</text>
+            <line class="grid" x1="56" y1="112.0" x2="472" y2="112.0"></line>
+            <text class="axis" x="40" y="116.0" text-anchor="end">75</text>
+            <line class="grid" x1="56" y1="52.0" x2="472" y2="52.0"></line>
+            <text class="axis" x="40" y="56.0" text-anchor="end">100</text>
+            <path class="line risk-line" d="M 56.0 208.2 L 160.0 147.8 L 264.0 114.2 L 368.0 95.9 L 472.0 78.2"></path>
+            <circle cx="56.0" cy="208.2" r="5" fill="var(--risk)"></circle>
+            <text class="num" x="56.0" y="196.2" text-anchor="middle">34,9</text>
+            <text class="axis" x="56.0" y="322" text-anchor="middle">Nada</text>
+            <text class="axis" x="56.0" y="340" text-anchor="middle">neg. 65,1</text>
+            <circle cx="160.0" cy="147.8" r="5" fill="var(--risk)"></circle>
+            <text class="num" x="160.0" y="135.8" text-anchor="middle">60,1</text>
+            <text class="axis" x="160.0" y="322" text-anchor="middle">Poco</text>
+            <text class="axis" x="160.0" y="340" text-anchor="middle">neg. 39,9</text>
+            <circle cx="264.0" cy="114.2" r="5" fill="var(--risk)"></circle>
+            <text class="num" x="264.0" y="102.2" text-anchor="middle">74,1</text>
+            <text class="axis" x="264.0" y="322" text-anchor="middle">Algo</text>
+            <text class="axis" x="264.0" y="340" text-anchor="middle">neg. 25,9</text>
+            <circle cx="368.0" cy="95.9" r="5" fill="var(--risk)"></circle>
+            <text class="num" x="368.0" y="83.9" text-anchor="middle">81,7</text>
+            <text class="axis" x="368.0" y="322" text-anchor="middle">Bastante</text>
+            <text class="axis" x="368.0" y="340" text-anchor="middle">neg. 18,3</text>
+            <circle cx="472.0" cy="78.2" r="5" fill="var(--risk)"></circle>
+            <text class="num" x="472.0" y="66.2" text-anchor="middle">89,1</text>
+            <text class="axis" x="472.0" y="322" text-anchor="middle">Mucho</text>
+            <text class="axis" x="472.0" y="340" text-anchor="middle">neg. 10,9</text>
+            <text class="axis" x="260" y="352" text-anchor="middle">Conocimiento autopercibido de IA · % con valoracion positiva literal</text>
+          </svg>
+          <p class="caption">Con las etiquetas literales de P36, la valoración positiva sube de 34,9 % entre quienes dicen no conocer nada a 89,1 % entre quienes dicen conocer mucho. La lectura original estaba invertida en este cruce.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="distantes">
+      <div class="inner split">
+        <div>
+          <p class="kicker fade">5 · Desconexión</p>
+          <h2 class="fade delay-1">El problema político no son los críticos. Son los distantes.</h2>
+          <p class="lede fade delay-2">Los distantes ven pocos beneficios y pocos riesgos. Están menos dentro de la conversación pública sobre ciencia y tecnología.</p>
+          <div class="viz-wrap fade" data-chart="bars">
+            <h3>¿Dónde pesa más el perfil distante?</h3>
+            <div class="bars">
+              <div class="bar-row muted" style="--v:30.6"><div class="bar-label">Educación básica</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">30,6</div></div>
+              <div class="bar-row muted" style="--v:29.4"><div class="bar-label">NSE D</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">29,4</div></div>
+              <div class="bar-row muted" style="--v:28.9"><div class="bar-label">Ama de casa</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">28,9</div></div>
+              <div class="bar-row muted" style="--v:28.5"><div class="bar-label">NSE E</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">28,5</div></div>
+              <div class="bar-row muted" style="--v:27.2"><div class="bar-label">Manual / industrial</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">27,2</div></div>
+            </div>
+          </div>
+        </div>
+        <aside class="callout dist fade delay-2">
+          <h3>La idea para política pública</h3>
+          <p>Si una persona teme la IA, ya está mirando el tema. Puede apoyar inversión pública en ciencia incluso desde la preocupación. La desconexión es más difícil: no ve promesa, no ve amenaza y apoya menos.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="territorio">
+      <div class="inner">
+        <p class="kicker fade">6 · Territorio</p>
+        <h2 class="fade delay-1">Loreto no solo “teme menos”: aparece mucho más distante.</h2>
+        <p class="lede fade delay-2">La tipología por departamento muestra mezclas distintas de optimismo, crítica, ambivalencia y desconexión. Esa lectura es más útil que mirar solo el temor laboral.</p>
+        <div class="viz-wrap fade">
+          <div class="stacked" aria-label="Tipología completa por departamento">
+            <div class="stack-row"><div class="stack-name">Loreto</div><div class="stack"><span class="seg opt" style="--w:11.3"></span><span class="seg amb" style="--w:23.0"></span><span class="seg cri" style="--w:9.8"></span><span class="seg dis" style="--w:55.9"></span></div><div class="bar-value">55,9</div></div>
+            <div class="stack-row"><div class="stack-name">Lambayeque</div><div class="stack"><span class="seg opt" style="--w:32.1"></span><span class="seg amb" style="--w:14.8"></span><span class="seg cri" style="--w:23.5"></span><span class="seg dis" style="--w:29.6"></span></div><div class="bar-value">29,6</div></div>
+            <div class="stack-row"><div class="stack-name">Puno</div><div class="stack"><span class="seg opt" style="--w:31.3"></span><span class="seg amb" style="--w:8.0"></span><span class="seg cri" style="--w:32.4"></span><span class="seg dis" style="--w:28.4"></span></div><div class="bar-value">28,4</div></div>
+            <div class="stack-row"><div class="stack-name">Lima</div><div class="stack"><span class="seg opt" style="--w:28.4"></span><span class="seg amb" style="--w:22.1"></span><span class="seg cri" style="--w:23.4"></span><span class="seg dis" style="--w:26.1"></span></div><div class="bar-value">26,1</div></div>
+            <div class="stack-row"><div class="stack-name">Cajamarca</div><div class="stack"><span class="seg opt" style="--w:14.2"></span><span class="seg amb" style="--w:14.7"></span><span class="seg cri" style="--w:48.8"></span><span class="seg dis" style="--w:22.3"></span></div><div class="bar-value">22,3</div></div>
+            <div class="stack-row"><div class="stack-name">Cusco</div><div class="stack"><span class="seg opt" style="--w:17.9"></span><span class="seg amb" style="--w:25.0"></span><span class="seg cri" style="--w:35.7"></span><span class="seg dis" style="--w:21.4"></span></div><div class="bar-value">21,4</div></div>
+            <div class="stack-row"><div class="stack-name">Áncash</div><div class="stack"><span class="seg opt" style="--w:21.0"></span><span class="seg amb" style="--w:23.5"></span><span class="seg cri" style="--w:34.6"></span><span class="seg dis" style="--w:21.0"></span></div><div class="bar-value">21,0</div></div>
+            <div class="stack-row"><div class="stack-name">Ica</div><div class="stack"><span class="seg opt" style="--w:11.5"></span><span class="seg amb" style="--w:19.4"></span><span class="seg cri" style="--w:48.2"></span><span class="seg dis" style="--w:20.9"></span></div><div class="bar-value">20,9</div></div>
+            <div class="stack-row"><div class="stack-name">Junín</div><div class="stack"><span class="seg opt" style="--w:31.5"></span><span class="seg amb" style="--w:27.9"></span><span class="seg cri" style="--w:20.7"></span><span class="seg dis" style="--w:19.9"></span></div><div class="bar-value">19,9</div></div>
+            <div class="stack-row"><div class="stack-name">Piura</div><div class="stack"><span class="seg opt" style="--w:28.1"></span><span class="seg amb" style="--w:32.6"></span><span class="seg cri" style="--w:20.2"></span><span class="seg dis" style="--w:19.0"></span></div><div class="bar-value">19,0</div></div>
+            <div class="stack-row"><div class="stack-name">La Libertad</div><div class="stack"><span class="seg opt" style="--w:21.2"></span><span class="seg amb" style="--w:37.3"></span><span class="seg cri" style="--w:23.3"></span><span class="seg dis" style="--w:18.1"></span></div><div class="bar-value">18,1</div></div>
+            <div class="stack-row"><div class="stack-name">Arequipa</div><div class="stack"><span class="seg opt" style="--w:13.6"></span><span class="seg amb" style="--w:23.3"></span><span class="seg cri" style="--w:46.4"></span><span class="seg dis" style="--w:16.7"></span></div><div class="bar-value">16,7</div></div>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--optimist)"></i>Optimista</span>
+            <span><i style="background:var(--ambiv)"></i>Ambivalente</span>
+            <span><i style="background:var(--risk)"></i>Crítico</span>
+            <span><i style="background:var(--distant)"></i>Distante</span>
+            <span>Última columna: % distante · Lima incluye Callao</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===================== 4. ¿QUIÉNES SE PREOCUPAN? ===================== -->
-  <section class="slide" id="s-ocupacion">
-    <div class="inner">
-      <div class="full">
-        <h2>¿Quiénes se preocupan?</h2>
-        <p class="lede">Esta preocupación no está repartida por igual. Las personas más preocupadas son el cuello blanco urbano, formado por comercio y servicios, profesionales y oficinistas.</p>
+    <section id="politica">
+      <div class="inner split">
+        <div>
+          <p class="kicker fade">7 · Apropiación social</p>
+          <h2 class="fade delay-1">El temor no cancela el apoyo a la ciencia.</h2>
+          <p class="lede fade delay-2">Críticos, ambivalentes y optimistas apoyan la inversión pública en CTI en niveles cercanos al 90 %. El apoyo cae entre los distantes.</p>
+          <div class="viz-wrap fade" data-chart="bars">
+            <div class="bars">
+              <div class="bar-row benefit" style="--v:91.1"><div class="bar-label">Optimistas · P19</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">91,1</div></div>
+              <div class="bar-row benefit" style="--v:90.8"><div class="bar-label">Ambivalentes · P19</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">90,8</div></div>
+              <div class="bar-row benefit" style="--v:89.8"><div class="bar-label">Críticos · P19</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">89,8</div></div>
+              <div class="bar-row muted" style="--v:81.4"><div class="bar-label">Distantes · P19</div><div class="bar-track"><div class="bar-fill"></div></div><div class="bar-value">81,4</div></div>
+            </div>
+            <p class="caption">P19: acuerdo con que el Estado aumente recursos a investigación científica. Con P20, que introduce trade-off presupuestal, todos bajan, pero los distantes siguen debajo.</p>
+          </div>
+        </div>
+        <aside class="callout fade delay-2">
+          <h3>Mensaje de cierre</h3>
+          <p>La política de apropiación social de la ciencia y la tecnología no tiene delante un problema simple de tecnofobia. Tiene un problema de conexión pública.</p>
+          <p>Los críticos ya están mirando el tema. Los distantes son el cuarto que hay que traer a la conversación.</p>
+        </aside>
       </div>
-      <div class="sidenote">
-        Los trabajadores manuales (agro, minería, manufactura, construcción, energía) no son la cima
-        del temor. Tampoco los jubilados. La pauta se ordena por la exposición percibida a la
-        automatización del trabajo de oficina. Es el hallazgo que más interesa desde la sociología
-        del trabajo.
-      </div>
-      <figure class="wide">
-        <svg id="chart-occ" viewBox="0 0 760 360" width="100%" role="img" aria-label="Porcentaje de acuerdo alto en P37.11 por grupo ocupacional."></svg>
-        <figcaption>
-          Figura 2. % de acuerdo alto en P37.11 («se perderán puestos de trabajo») por grupo
-          ocupacional, ponderado. Línea punteada, promedio nacional urbano = 50,7 %. Tamaño
-          muestral indicado a la izquierda. Resaltado, el cuello blanco urbano (comercio y servicios,
-          profesional y oficinista).
-        </figcaption>
-      </figure>
-      <p class="wide" style="margin-top:14px;">
-        Tiene sentido. Según estudios previos, este es el grupo más expuesto a la automatización
-        del trabajo de oficina
-        (<a href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noopener">OIT, Generative AI and Jobs</a>).
-      </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===================== 5. BENEFICIOS Y RIESGOS ===================== -->
-  <section class="slide" id="s-scatter">
-    <div class="inner">
-      <div class="full">
-        <h2>Beneficios y riesgos no necesariamente van de la mano.</h2>
-        <p class="lede">Los índices de beneficio y riesgo percibidos no se oponen, su correlación es nula. Cortados en el 50, el punto medio sustantivo de la escala y no la mediana muestral, el optimismo resulta minoritario (16,8 %).</p>
-      </div>
-      <div class="sidenote">
-        Ambos índices vienen de la pregunta <strong style="color:var(--ink);">P37</strong>,
-        <i>«¿Usted cree que la inteligencia artificial...?»</i>, en escala de 1 a 10. El índice de
-        <strong style="color:var(--ink);">beneficios</strong> resume ocho afirmaciones (calidad de
-        vida, economía, salud, decisiones, etc.) y el de <strong style="color:var(--ink);">riesgos</strong>
-        las otras ocho (amenaza a la sociedad, pérdida de empleo, control de la vida privada, etc.).
-        <br><br>
-        Cada punto de la nube es una persona. La correlación ponderada entre los dos índices es
-        <span class="lnum">r = –0,01</span>, virtualmente nula.
-      </div>
-      <figure class="wide">
-        <svg id="chart-scatter" viewBox="0 0 760 540" width="100%" role="img" aria-label="Nube de dispersión de los índices de beneficios y riesgos, partida en 50/50."></svg>
-        <figcaption>
-          Figura 3. Eje horizontal, índice de beneficios percibidos (0–100). Eje vertical, índice de
-          riesgos percibidos. Cada punto, una persona encuestada (n = 3 214). Histogramas marginales
-          sobre los ejes muestran la densidad ponderada de cada índice. Líneas, corte sustantivo
-          en 50/50.
-        </figcaption>
-      </figure>
-      <p class="wide" style="margin-top:14px;">
-        Encontramos también que las mujeres son más críticas (33 % frente a 27 %) y los varones
-        más ambivalentes. Las mujeres tenderían a ser más críticas dado que se concentran en
-        oficios de cuello blanco muy feminizados, algo que otros estudios han encontrado al notar
-        que son, potencialmente, más afectadas por las tecnologías actuales
-        (<a href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noopener">OIT</a>).
-      </p>
-    </div>
-  </section>
-
-  <!-- ===================== 6. DESIGUALDADES (CRÍTICOS) ===================== -->
-  <section class="slide" id="s-criticos">
-    <div class="inner">
-      <div class="full">
-        <h2>Desigualdades y visiones sobre la inteligencia artificial.</h2>
-        <p class="lede">Vale la pena mirar también a los críticos, las personas que perciben riesgos altos y pocos beneficios. ¿Cómo se reparten por nivel económico, educación y ocupación?</p>
-      </div>
-      <div class="sidenote">
-        Los dos índices vienen de la pregunta <strong style="color:var(--ink);">P37</strong>:
-        <i>«¿Usted cree que la inteligencia artificial...?»</i>, en escala de 1 a 10. Ocho
-        afirmaciones forman el índice de beneficios (calidad de vida, economía, salud,
-        decisiones, etc.) y las otras ocho el de riesgos (amenaza a la sociedad, pérdida de
-        empleo, control de la vida privada, etc.).
-        <br><br>
-        Crítico = índice de riesgos ≥ 50 y de beneficios &lt; 50. A diferencia del Distante (que ve
-        poco de todo), el Crítico ve la amenaza con más claridad que la promesa.
-      </div>
-      <figure class="wide">
-        <svg id="chart-criticos" viewBox="0 0 760 560" width="100%" role="img" aria-label="% de Críticos por NSE, educación y ocupación."></svg>
-        <figcaption>
-          Figura 4. % de personas clasificadas como <i>Crítico</i> (riesgos ≥ 50 y beneficios &lt; 50)
-          dentro de cada categoría, ponderado por <i>F<sub>exp</sub></i>. Línea punteada, promedio
-          nacional = 30,0 %.
-        </figcaption>
-      </figure>
-      <p class="wide" style="margin-top:14px;">
-        El gradiente educativo es claro. Mientras más alta la escolaridad, mayor la proporción de
-        críticos (de 24,8 % en educación básica a 32,6 % en superior). El patrón socioeconómico
-        es menos lineal, con un pico en el NSE B (34 %) y un descenso hacia los extremos. Por
-        ocupación, el comercio y los servicios concentran la mirada crítica (34,4 %); los
-        jubilados, lejos del mundo digital activo, casi no la expresan (19,0 %).
-      </p>
-    </div>
-  </section>
-
-  <!-- ===================== 7. AUTOPERCEPCIÓN DEL CONOCIMIENTO ===================== -->
-  <section class="slide" id="s-conocimiento">
-    <div class="inner">
-      <div class="full">
-        <h2>Autopercepción del conocimiento e inteligencia artificial.</h2>
-        <p class="lede">Cuanto más conocimiento sobre inteligencia artificial se autoatribuye una persona, más severo es su veredicto global.</p>
-      </div>
-      <div class="sidenote">
-        Los índices van al revés que el veredicto global. Al subir el conocimiento autopercibido,
-        el índice de beneficios <i>sube</i> (<span class="lnum">37,8 → 56,7</span>) y el índice
-        de riesgos queda plano (<span class="lnum">~52 → 49</span>). Son los mismos índices de las
-        láminas anteriores. Quienes más conocimiento se atribuyen emiten un veredicto global más
-        severo, pero al mismo tiempo reconocen más beneficios concretos. Severos en lo general,
-        atentos al detalle.
-      </div>
-      <figure class="wide">
-        <svg id="chart-dk" viewBox="0 0 760 360" width="100%" role="img" aria-label="% con valoración global positiva según conocimiento autopercibido (slope chart)."></svg>
-        <figcaption>
-          Figura 5. Eje vertical, % con valoración global positiva de la IA (P36 = «muy positivo»
-          o «positivo»), por nivel de conocimiento autopercibido (P35), ponderado. Cifra inferior
-          en cada punto, % que declara una valoración <i>muy negativa</i>. El salto de 2 % a 35 %
-          en el extremo es el dato.
-        </figcaption>
-      </figure>
-
-      <div class="sidebox">
-        <h3>El contraste internacional. Ipsos AI Monitor 2025</h3>
-        <p style="margin-top:0;">
-          Ya hay algunos trabajos a nivel global, como el
-          <a href="https://www.ipsos.com/sites/default/files/ct/publication/documents/2025-06/Ipsos-AI-Monitor-2025.pdf" target="_blank" rel="noopener">Ipsos AI Monitor</a>.
-          Entre países, el Perú está entre los mercados más entusiastas con la inteligencia
-          artificial. Es de los pocos donde el entusiasmo supera con holgura al nerviosismo
-          (<strong>66 %</strong> frente a <strong>47 %</strong>), al revés del patrón anglosajón.
-        </p>
-        <ul>
-          <li><i>«Tengo buen entendimiento de qué es la IA»:</i> Perú <strong>76 %</strong>, global 67 %.</li>
-          <li><i>«La IA tiene más beneficios que desventajas»:</i> Perú <strong>69 %</strong>, global 56 %.</li>
-          <li><i>«Confío en que la IA no discrimina ni sesga»:</i> Perú <strong>71 %</strong>, global 54 %.</li>
-          <li><i>«Confío en que las empresas que usan IA protegerán mis datos»:</i> Perú <strong>61 %</strong>, global 48 %.</li>
-        </ul>
-        <p>
-          Lo que esta encuesta agrega es ver la variación dentro del Perú, y cómo esa variación
-          se vincula al conocimiento autopercibido. Mientras más cree saber la gente, no
-          necesariamente es menos crítica ni más optimista. Puede darse incluso una relación
-          inversa.
-        </p>
-        <p>
-          <strong>La paradoja en dos niveles.</strong> Entre países, el Perú se siente informado
-          y confiado. Pero dentro del Perú, los que más creen saber son los más críticos.
-        </p>
-        <p style="font-size: 0.85rem; color: var(--ink-mute); font-style: italic;">
-          El propio Ipsos advierte que su muestra peruana (cerca de 500 casos) es más urbana,
-          educada y conectada que la población general, así que retrata al Perú conectado y no
-          al país completo.
-        </p>
-        <span class="src">Ipsos, <i>AI Monitor 2025</i>.</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 8. SÍNTESIS ===================== -->
-  <section class="slide" id="s-sintesis">
-    <div class="inner">
-      <p class="eyebrow">Síntesis</p>
-      <div class="body closing">
-        <p class="first">
-          El imaginario peruano sobre la inteligencia artificial es <em>ambivalente</em>.
-        </p>
-        <p>
-          Y apenas empezamos a ver cómo se asienta. Sus efectos financieros y sobre la
-          productividad siguen abriéndose paso, y la relación entre cuánto cree saber la gente
-          y cómo juzga la tecnología todavía se está dibujando.
-        </p>
-        <p>
-          El contexto, además, ya está cambiando. En otros países hay protestas por los
-          <a href="https://www.cnn.com/2026/04/12/climate/maine-data-center-ban-bill" target="_blank" rel="noopener">data centers</a>
-          y tensiones en las
-          <a href="https://www.theregister.com/2025/06/16/university_ai_cheating/" target="_blank" rel="noopener">universidades</a>
-          por plagio y conducta ética.
-        </p>
-        <p>
-          Por eso esta encuesta vale como punto de partida. Repetir esta medición de forma
-          sostenida en el tiempo va a ser cada vez más crítico.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 9. METODOLOGÍA ===================== -->
-  <section class="slide" id="s-metodologia">
-    <div class="inner">
-      <div class="full metodo">
-        <h2>Metodología</h2>
-        <p style="max-width:64ch; margin-top:0;">
-          La <strong>ENPSCyT 2024</strong> mide la percepción social de la ciencia y la tecnología
-          en el Perú urbano. Su módulo de IA registra el conocimiento autopercibido (P35), la
-          valoración global de la IA (P36) y dieciséis afirmaciones en escala 1–10 (P37). Esta
-          pieza es una lectura de ese módulo.
-        </p>
-        <dl>
-          <dt>Fuente</dt>
-          <dd>
-            CONCYTEC (2026), <i>Encuesta Nacional de Percepción Social de la Ciencia y Tecnología,
-            ENPSCyT 2024</i>.
-            <a href="https://repositorio.concytec.gob.pe/entities/publication/a930a16c-c35a-4468-9ebd-fd29a55ee0d6" target="_blank" rel="noopener">repositorio CONCYTEC</a>.
-          </dd>
-          <dt>Muestra</dt>
-          <dd><span class="lnum">N = 3 214</span>; población urbana de 18 años a más; 12 departamentos.</dd>
-          <dt>Margen de error</dt>
-          <dd><span class="lnum">±2 %</span> a nivel urbano nacional. Entre <span class="lnum">±6 %</span> y <span class="lnum">±8,75 %</span> por departamento (Lima, <span class="lnum">±3,75 %</span>).</dd>
-          <dt>Ponderación</dt>
-          <dd>Todas las cifras van ponderadas por <i>F<sub>exp</sub></i>; errores estándar con conglomerado muestral <span class="lnum">mod0_7</span>.</dd>
-          <dt>Tipología</dt>
-          <dd>Perfiles definidos por corte absoluto en 50 de los índices de beneficios y riesgos (0–100), no por la mediana.</dd>
+    <section id="metodo">
+      <div class="inner narrow">
+        <p class="kicker fade">Método y notas</p>
+        <h2 class="fade delay-1">Qué mide esta página.</h2>
+        <p class="bodycopy fade delay-2">La visualización usa la ENPSCyT 2024 de CONCYTEC y los cuadros producidos en esta carpeta de trabajo. Todas las cifras son ponderadas por Fexp. El corte “acuerdo alto” equivale a valores 7 a 10, por lo que no debe compararse directamente con agrupamientos distintos del informe oficial.</p>
+        <dl class="method fade delay-3">
+          <div><dt>Universo</dt><dd>Personas de 18 años o más, residentes en áreas urbanas de trece ámbitos: doce departamentos y la Provincia Constitucional del Callao. En el mapa territorial, Lima y Callao se agrupan como Lima Metropolitana, por lo que aparecen doce filas.</dd></div>
+          <div><dt>Tamaño muestral</dt><dd>n = 3 214 entrevistas. Trabajo de campo: 29 de junio a 13 de agosto de 2024.</dd></div>
+          <div><dt>Índices</dt><dd>Beneficios y riesgos de IA se construyen con ocho ítems cada uno de la pregunta P37, en escala 0 a 100.</dd></div>
+          <div><dt>Perfiles</dt><dd>Optimista, Crítico, Ambivalente y Distante cruzan beneficios y riesgos altos/bajos. Son una herramienta heurística, no tipos cerrados.</dd></div>
+          <div><dt>Limitación</dt><dd>La encuesta mide percepción, no impacto laboral real ni uso efectivo de IA en el puesto de trabajo.</dd></div>
+          <div><dt>Archivos base</dt><dd><code>base_limpia_IA.csv</code>, <code>cuadros_IA_reprocesados_corregidos.xlsx</code>, <code>scripts/reprocesar_ia.py</code>, <code>scripts/generar_moldes_omar_corregidos.py</code>.</dd></div>
         </dl>
-        <p style="margin: 26px 0 0; font-size: 0.95rem;">
-          <a class="goto" data-target="s-portada">← volver al inicio</a>
-        </p>
       </div>
-    </div>
-  </section>
-
+    </section>
+  </main>
 </div>
 
 <script>
-  const fmt = v => v.toFixed(1).replace('.', ',');
-  const accent = '#3d6b4d';
+  const sections = [...document.querySelectorAll("main section")];
+  const navLinks = [...document.querySelectorAll("#nav a")];
+  const progress = document.getElementById("progress");
 
-  /* ----------------------------- Chart P37 ----------------------------- */
-  (function p37(){
-    const items = [
-      {n:11, label:'Se perderán puestos de trabajo',           pct:50.7, tipo:'neg', hl:true},
-      {n: 9, label:'Llevará al dominio de las máquinas',       pct:44.3, tipo:'neg'},
-      {n:16, label:'Controlará la vida privada',               pct:39.6, tipo:'neg'},
-      {n:14, label:'Generará mayores divisiones sociales',     pct:32.8, tipo:'neg'},
-      {n:13, label:'Cuida mejor de la salud',                  pct:32.1, tipo:'pos'},
-      {n: 4, label:'Mejora la calidad de vida',                pct:30.5, tipo:'pos'},
-      {n:12, label:'Generará más problemas que soluciones',    pct:29.4, tipo:'neg'},
-      {n: 3, label:'Favorece el crecimiento económico',        pct:28.3, tipo:'pos'},
-      {n: 2, label:'Amenaza el desarrollo de las personas',    pct:28.1, tipo:'neg'},
-      {n:15, label:'Permitirá tomar mejores decisiones',       pct:27.3, tipo:'pos'},
-      {n: 5, label:'Trae más daños que beneficios',            pct:26.9, tipo:'neg'},
-      {n:10, label:'Permitirá una sociedad más evolucionada',  pct:26.5, tipo:'pos'},
-      {n: 6, label:'Buena compañía para personas solas',       pct:24.8, tipo:'pos'},
-      {n: 8, label:'Consecuencias negativas para la sociedad', pct:23.4, tipo:'neg'},
-      {n: 7, label:'Creará nuevos puestos de trabajo',         pct:21.3, tipo:'pos', hl:true},
-      {n: 1, label:'Resuelve problemas que no podríamos',      pct:18.2, tipo:'pos'},
-    ];
-    const svg = document.getElementById('chart-p37');
-    const W = 760, H = 540;
-    const m = { t: 24, r: 80, b: 38, l: 360 };
-    const innerW = W - m.l - m.r;
-    const innerH = H - m.t - m.b;
-    const xMin = Math.min(...items.map(d=>d.pct));
-    const xMax = Math.max(...items.map(d=>d.pct));
-    const xLo = Math.floor(xMin/5)*5;
-    const xHi = Math.ceil(xMax/5)*5;
-    const x = v => m.l + ((v - xLo) / (xHi - xLo)) * innerW;
-    const y = i => m.t + (i + 0.5) * (innerH / items.length);
-
-    let html = '';
-    for (let v = xLo; v <= xHi; v += 5){
-      html += `<line class="grid" x1="${x(v)}" y1="${m.t}" x2="${x(v)}" y2="${m.t+innerH}"/>`;
-      html += `<text class="lab-axis" x="${x(v)}" y="${m.t+innerH+16}" text-anchor="middle">${v}</text>`;
-    }
-    html += `<text class="lab-axis" x="${m.l + innerW/2}" y="${m.t+innerH+32}" text-anchor="middle">% con acuerdo alto (≥ 7 en escala 1–10)</text>`;
-    html += `<line class="rangeframe" x1="${x(xMin)}" y1="${m.t+innerH+4}" x2="${x(xMax)}" y2="${m.t+innerH+4}"/>`;
-    const risk = 'var(--risk)';
-    items.forEach((d, i) => {
-      const cy = y(i), cx = x(d.pct);
-      html += `<line class="grid" x1="${m.l}" y1="${cy}" x2="${cx - 6}" y2="${cy}"/>`;
-      // Etiqueta del ítem: hl en su color semántico (riesgo → terracota; beneficio → verde),
-      // no-hl en tinta normal.
-      const labelColor = d.hl
-        ? (d.tipo === 'neg' ? risk : accent)
-        : 'var(--ink)';
-      html += `<text class="lab" x="${m.l - 12}" y="${cy + 4}" text-anchor="end" fill="${labelColor}">
-        <tspan style="font-feature-settings:'lnum','tnum'" fill="var(--ink-mute)">${d.n.toString().padStart(2,' ')}.</tspan> ${d.label}
-      </text>`;
-      // Puntos: riesgo en --risk (filled), beneficio en --accent (open).
-      if (d.hl){
-        if (d.tipo === 'neg') html += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${risk}"/>`;
-        else html += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--paper)" stroke="${accent}" stroke-width="1.5"/>`;
-      } else {
-        if (d.tipo === 'neg') html += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${risk}" opacity="0.7"/>`;
-        else html += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="var(--paper)" stroke="${accent}" stroke-width="1" opacity="0.85"/>`;
+  const reveal = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("inview");
       }
-      // Valor numérico: 50,7 en verde (cifra memorable). Resto, tinta.
-      const vColor = (d.n === 11) ? accent : (d.hl ? 'var(--ink)' : 'var(--ink-mute)');
-      const vWeight = (d.n === 11) ? 500 : 400;
-      html += `<text class="lab-num" x="${cx + 10}" y="${cy + 4}" fill="${vColor}" font-weight="${vWeight}">${fmt(d.pct)}</text>`;
     });
+  }, { threshold: 0.18 });
 
-    // Corchete que une los dos ítems de la pareja laboral (P37.11 arriba, P37.7 abajo)
-    // y enseña visualmente el contraste de 29,4 puntos.
-    const iHi = items.findIndex(d => d.n === 11);
-    const iLo = items.findIndex(d => d.n === 7);
-    const cyHi = y(iHi), cyLo = y(iLo);
-    const cxHi = x(items[iHi].pct), cxLo = x(items[iLo].pct);
-    const bx = Math.max(cxHi, cxLo) + 40;
-    html += `<line x1="${bx}" y1="${cyHi}" x2="${bx}" y2="${cyLo}" stroke="${accent}" stroke-width="0.9"/>`;
-    html += `<line x1="${bx-5}" y1="${cyHi}" x2="${bx}" y2="${cyHi}" stroke="${accent}" stroke-width="0.9"/>`;
-    html += `<line x1="${bx-5}" y1="${cyLo}" x2="${bx}" y2="${cyLo}" stroke="${accent}" stroke-width="0.9"/>`;
-    const cyMid = (cyHi + cyLo) / 2;
-    html += `<text class="annot-accent" x="${bx+8}" y="${cyMid-14}" font-weight="500">29,4 puntos,</text>`;
-    html += `<text class="annot-accent" x="${bx+8}" y="${cyMid}">el mayor contraste</text>`;
-    html += `<text class="annot-accent" x="${bx+8}" y="${cyMid+14}">de la batería</text>`;
+  document.querySelectorAll(".fade,.viz-wrap").forEach((el) => reveal.observe(el));
 
-    svg.innerHTML = html;
-  })();
-
-  /* ----------------------------- Chart Ocupación ----------------------------- */
-  (function occ(){
-    const items = [
-      {label:'Comercio y servicios',     pct:55.6, n:1038, hl:true},
-      {label:'Profesional / oficinista', pct:54.3, n: 437, hl:true},
-      {label:'Ama de casa',              pct:51.7, n: 467},
-      {label:'Inactivo / desempleado',   pct:50.4, n:  88},
-      {label:'Manual / industrial',      pct:48.4, n: 526},
-      {label:'Estudiante',               pct:46.0, n: 188},
-      {label:'Jubilado',                 pct:43.8, n: 127},
-    ];
-    const svg = document.getElementById('chart-occ');
-    const W = 760, H = 360;
-    const m = { t: 24, r: 80, b: 40, l: 260 };
-    const innerW = W - m.l - m.r;
-    const innerH = H - m.t - m.b;
-    const xMin = 40, xMax = 60;
-    const x = v => m.l + ((v - xMin) / (xMax - xMin)) * innerW;
-    const y = i => m.t + (i + 0.5) * (innerH / items.length);
-    const nMax = Math.max(...items.map(d=>d.n));
-
-    let html = '';
-    for (let v = xMin; v <= xMax; v += 5){
-      html += `<line class="grid" x1="${x(v)}" y1="${m.t}" x2="${x(v)}" y2="${m.t+innerH}"/>`;
-      html += `<text class="lab-axis" x="${x(v)}" y="${m.t+innerH+16}" text-anchor="middle">${v}</text>`;
-    }
-    html += `<text class="lab-axis" x="${m.l + innerW/2}" y="${m.t+innerH+32}" text-anchor="middle">% con acuerdo alto en P37.11</text>`;
-    html += `<line class="ref" x1="${x(50.7)}" y1="${m.t-6}" x2="${x(50.7)}" y2="${m.t+innerH+4}" stroke="${accent}" stroke-dasharray="2 2"/>`;
-    html += `<text class="annot-accent" x="${x(50.7)+4}" y="${m.t-2}" font-weight="500">promedio nacional urbano = 50,7</text>`;
-    html += `<line class="rangeframe" x1="${x(Math.min(...items.map(d=>d.pct)))}" y1="${m.t+innerH+4}" x2="${x(Math.max(...items.map(d=>d.pct)))}" y2="${m.t+innerH+4}"/>`;
-
-    const barX0 = 30, barX1 = 130;
-    items.forEach((d, i) => {
-      const cy = y(i), cx = x(d.pct);
-      // Cuello blanco resaltado por peso y tamaño, no por color.
-      const labColor = d.hl ? 'var(--ink)' : 'var(--ink-mute)';
-      const labWeight = d.hl ? 500 : 400;
-      const nW = (d.n / nMax) * (barX1 - barX0);
-      html += `<rect x="${barX1 - nW}" y="${cy - 4}" width="${nW}" height="8" fill="#d6d3c8"/>`;
-      html += `<text class="lab-axis" x="${barX1 - nW - 6}" y="${cy + 3}" text-anchor="end">n=${d.n}</text>`;
-      html += `<text class="lab" x="${m.l - 14}" y="${cy + 4}" text-anchor="end" fill="${labColor}" font-weight="${labWeight}">${d.label}</text>`;
-      html += `<line class="grid" x1="${m.l}" y1="${cy}" x2="${cx - 6}" y2="${cy}"/>`;
-      if (d.hl) html += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--ink)"/>`;
-      else html += `<circle cx="${cx}" cy="${cy}" r="3" fill="var(--ink-mute)"/>`;
-      html += `<text class="lab-num" x="${cx + 10}" y="${cy + 4}" fill="${labColor}" font-weight="${labWeight}">${fmt(d.pct)}</text>`;
-    });
-    html += `<text class="lab-axis" x="${barX1/2 + 15}" y="${m.t - 4}" text-anchor="middle">muestra</text>`;
-    svg.innerHTML = html;
-  })();
-</script>
-
-<script>
-/* Scatter data inlined */
-const SCATTER_DATA = {"n":3214,"bmed":48.0,"rmed":51.0,"ben_marg":[0.233,0.044,0.089,0.053,0.101,0.101,0.111,0.157,0.17,0.142,0.323,0.248,0.44,0.261,0.399,0.333,0.5,0.387,0.576,0.463,1.0,0.333,0.477,0.31,0.367,0.245,0.237,0.155,0.21,0.105,0.202,0.091,0.109,0.054,0.127,0.122,0.062,0.033,0.024,0.14],"ries_marg":[0.152,0.019,0.05,0.06,0.109,0.064,0.099,0.084,0.111,0.113,0.226,0.145,0.251,0.192,0.218,0.26,0.41,0.332,0.435,0.254,1.0,0.317,0.558,0.3,0.396,0.267,0.307,0.287,0.296,0.182,0.236,0.141,0.179,0.115,0.139,0.143,0.089,0.051,0.041,0.185]};
-</script>
-
-<script src="visualizacion_IA_tufte_v3_pts.js"></script>
-
-<script>
-  /* ----------------------------- Chart Scatter ----------------------------- */
-  (function scatter(){
-    const svg = document.getElementById('chart-scatter');
-    const W = 760, H = 540;
-    const margTop = 64, margRight = 70;
-    const m = { t: 30, r: margRight + 200, b: 56, l: 56 };
-    const scatterTop = m.t + margTop + 14;
-    const scatterLeft = m.l;
-    const scatterRight = W - m.r;
-    const scatterBot = H - m.b;
-    const scatterW = scatterRight - scatterLeft;
-    const scatterH = scatterBot - scatterTop;
-    const x = v => scatterLeft + (v / 100) * scatterW;
-    const y = v => scatterBot - (v / 100) * scatterH;
-    const D = SCATTER_DATA;
-    let html = '';
-    for (let v = 0; v <= 100; v += 20){
-      html += `<line class="grid" x1="${x(v)}" y1="${scatterTop}" x2="${x(v)}" y2="${scatterBot}" stroke-opacity="0.55"/>`;
-      html += `<text class="lab-axis" x="${x(v)}" y="${scatterBot + 16}" text-anchor="middle">${v}</text>`;
-      html += `<line class="grid" x1="${scatterLeft}" y1="${y(v)}" x2="${scatterRight}" y2="${y(v)}" stroke-opacity="0.55"/>`;
-      html += `<text class="lab-axis" x="${scatterLeft - 8}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
-    }
-    html += `<line class="ref-strong" x1="${x(50)}" y1="${scatterTop}" x2="${x(50)}" y2="${scatterBot}"/>`;
-    html += `<line class="ref-strong" x1="${scatterLeft}" y1="${y(50)}" x2="${scatterRight}" y2="${y(50)}"/>`;
-
-    function jitter(){ return (Math.random() - 0.5) * 0.7; }
-    const PTS = (typeof SCATTER_PTS !== 'undefined') ? SCATTER_PTS : [];
-    let cloud = '';
-    for (let i = 0; i < PTS.length; i += 2){
-      const bx = PTS[i] + jitter();
-      const ry = PTS[i+1] + jitter();
-      cloud += `<circle cx="${x(bx).toFixed(1)}" cy="${y(ry).toFixed(1)}" r="1.5" fill="#1b1b1b" opacity="0.10"/>`;
-    }
-    html += cloud;
-
-    html += `<line class="rangeframe" x1="${scatterLeft}" y1="${scatterBot + 3}" x2="${scatterRight}" y2="${scatterBot + 3}"/>`;
-    html += `<line class="rangeframe" x1="${scatterLeft - 3}" y1="${scatterTop}" x2="${scatterLeft - 3}" y2="${scatterBot}"/>`;
-    html += `<text class="lab-axis" x="${(scatterLeft + scatterRight)/2}" y="${scatterBot + 34}" text-anchor="middle">índice de beneficios percibidos · 0–100 (corte sustantivo en 50)</text>`;
-    html += `<text class="lab-axis" x="${scatterLeft - 38}" y="${(scatterTop + scatterBot)/2}" text-anchor="middle" transform="rotate(-90 ${scatterLeft - 38} ${(scatterTop + scatterBot)/2})">índice de riesgos percibidos · 0–100 (corte en 50)</text>`;
-
-    const nBins = D.ben_marg.length;
-    const binW = scatterW / nBins;
-    const topH = margTop;
-    D.ben_marg.forEach((v, i) => {
-      const bh = v * topH;
-      const bx = scatterLeft + i * binW;
-      html += `<rect x="${bx + 0.5}" y="${m.t + (topH - bh)}" width="${binW - 1}" height="${bh}" fill="#1b1b1b" opacity="0.55"/>`;
-    });
-    const rightW = margRight;
-    D.ries_marg.forEach((v, i) => {
-      const bw = v * rightW;
-      const by = scatterBot - (i + 1) * (scatterH / nBins);
-      const binHy = scatterH / nBins;
-      html += `<rect x="${scatterRight + 6}" y="${by + 0.5}" width="${bw}" height="${binHy - 1}" fill="#1b1b1b" opacity="0.55"/>`;
-    });
-    html += `<text class="lab-axis" x="${scatterLeft}" y="${m.t - 4}" font-style="italic" fill="var(--ink-mute)">densidad ponderada de beneficios →</text>`;
-    html += `<text class="lab-axis" x="${scatterRight + 6}" y="${m.t + topH - 4}" font-style="italic" fill="var(--ink-mute)">↑ densidad ponderada de riesgos</text>`;
-
-    const perfiles = [
-      { name:'Crítico',     pct:30.0, x:25, y:75, risk:true },
-      { name:'Ambivalente', pct:29.3, x:74, y:75 },
-      { name:'Distante',    pct:23.8, x:25, y:28 },
-      { name:'Optimista',   pct:16.8, x:74, y:28, hl:true },
-    ];
-    perfiles.forEach(p => {
-      const col = p.hl ? accent : (p.risk ? 'var(--risk)' : 'var(--ink)');
-      const w = (p.hl || p.risk) ? 500 : 400;
-      html += `<rect x="${x(p.x) - 50}" y="${y(p.y) - 20}" width="100" height="38" fill="var(--paper)" opacity="0.9" rx="2"/>`;
-      html += `<text class="lab" x="${x(p.x)}" y="${y(p.y) - 4}" text-anchor="middle" fill="${col}" font-style="italic" font-weight="${w}">${p.name}</text>`;
-      html += `<text class="lab-num" x="${x(p.x)}" y="${y(p.y) + 12}" text-anchor="middle" fill="${col}" font-weight="${w}">${fmt(p.pct)}%</text>`;
-    });
-
-    const xA = scatterRight + margRight + 28;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 4}" style="font-style: italic;">Correlación entre índices</text>`;
-    html += `<text x="${xA}" y="${scatterTop + 32}" style="font-size: 24px; fill: ${accent}; font-feature-settings: 'lnum';">r = –0,01</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 52}">virtualmente cero. Los dos</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 66}">índices son linealmente</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 80}">no relacionados.</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 116}" style="font-style: italic;">n = 3 214 personas</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 152}" style="font-style: italic;">Las líneas cortan en 50,</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 166}" style="font-style: italic;">el punto medio sustantivo</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 180}" style="font-style: italic;">de la escala 0–100, no la</text>`;
-    html += `<text class="annot" x="${xA}" y="${scatterTop + 194}" style="font-style: italic;">mediana muestral.</text>`;
-    svg.innerHTML = html;
-  })();
-
-  /* ----------------------------- Chart Críticos ----------------------------- */
-  (function criticos(){
-    const groups = [
-      { title:'Nivel socioeconómico', rows:[
-        {label:'A', pct:27.8}, {label:'B', pct:34.0}, {label:'C', pct:30.6},
-        {label:'D', pct:26.5}, {label:'E', pct:25.0},
-      ]},
-      { title:'Educación', rows:[
-        {label:'Superior', pct:32.6}, {label:'Media', pct:30.4}, {label:'Básica', pct:24.8},
-      ]},
-      { title:'Ocupación', rows:[
-        {label:'Comercio y servicios', pct:34.4},
-        {label:'Ama de casa', pct:32.2},
-        {label:'Profesional / oficinista', pct:28.8},
-        {label:'Inactivo / desempleado', pct:28.8},
-        {label:'Otro empleo', pct:28.8},
-        {label:'Manual / industrial', pct:26.8},
-        {label:'Estudiante', pct:22.8},
-        {label:'Jubilado', pct:19.0},
-      ]},
-    ];
-    const svg = document.getElementById('chart-criticos');
-    const W = 760;
-    const m = { t: 24, r: 70, b: 40, l: 250 };
-    const innerW = W - m.l - m.r;
-    const xMin = 15, xMax = 38;
-    const x = v => m.l + ((v - xMin) / (xMax - xMin)) * innerW;
-    const rowH = 22, headH = 26;
-    const innerBot = m.t + groups.reduce((a,g)=> a + headH + g.rows.length*rowH + 8, 0);
-    let cursor = m.t;
-    let html = '';
-    for (let v = 15; v <= 35; v += 5){
-      html += `<line class="grid" x1="${x(v)}" y1="${m.t-4}" x2="${x(v)}" y2="${innerBot}"/>`;
-      html += `<text class="lab-axis" x="${x(v)}" y="${innerBot+16}" text-anchor="middle">${v}</text>`;
-    }
-    html += `<text class="lab-axis" x="${m.l + innerW/2}" y="${innerBot+32}" text-anchor="middle">% del grupo clasificado como Crítico</text>`;
-    html += `<line class="ref" x1="${x(30.0)}" y1="${m.t-4}" x2="${x(30.0)}" y2="${innerBot}"/>`;
-    html += `<text class="annot" x="${x(30.0)+4}" y="${m.t+6}">Crítico nacional = 30,0</text>`;
-    groups.forEach(g => {
-      html += `<text class="lab" x="${m.l - 230}" y="${cursor + 14}" fill="var(--ink-soft)" font-style="italic" font-weight="500">${g.title}</text>`;
-      cursor += headH;
-      g.rows.forEach(d => {
-        const cy = cursor + rowH/2;
-        const cx = x(d.pct);
-        html += `<line class="grid" x1="${m.l}" y1="${cy}" x2="${cx - 6}" y2="${cy}"/>`;
-        html += `<text class="lab" x="${m.l - 14}" y="${cy + 4}" text-anchor="end">${d.label}</text>`;
-        html += `<circle cx="${cx}" cy="${cy}" r="4" fill="var(--ink)"/>`;
-        html += `<text class="lab-num" x="${cx + 10}" y="${cy + 4}" fill="var(--ink)">${fmt(d.pct)}</text>`;
-        cursor += rowH;
+  const sectionSpy = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + id);
       });
-      cursor += 8;
     });
-    svg.setAttribute('viewBox', `0 0 ${W} ${cursor + 44}`);
-    svg.innerHTML = html;
-  })();
+  }, { rootMargin: "-42% 0px -48% 0px", threshold: 0.01 });
 
-  /* ----------------------------- Chart DK slope ----------------------------- */
-  (function dk(){
-    const items = [
-      {lab:'Nada',     pos:65, mn:2},
-      {lab:'Poco',     pos:40, mn:3},
-      {lab:'Algo',     pos:26, mn:3},
-      {lab:'Bastante', pos:18, mn:12},
-      {lab:'Mucho',    pos:11, mn:35},
-    ];
-    const svg = document.getElementById('chart-dk');
-    const W = 760, H = 360;
-    const m = { t: 30, r: 120, b: 56, l: 56 };
-    const innerW = W - m.l - m.r;
-    const innerH = H - m.t - m.b;
-    const yMin = 0, yMax = 70;
-    const x = i => m.l + (i/(items.length-1)) * innerW;
-    const y = v => m.t + (1 - (v - yMin)/(yMax - yMin)) * innerH;
-    let html = '';
-    [0,20,40,60].forEach(v => {
-      html += `<line class="grid" x1="${m.l}" y1="${y(v)}" x2="${m.l+innerW}" y2="${y(v)}"/>`;
-      html += `<text class="lab-axis" x="${m.l-8}" y="${y(v)+3}" text-anchor="end">${v}%</text>`;
-    });
-    const path = items.map((d,i)=> (i===0?'M':'L') + x(i) + ' ' + y(d.pos)).join(' ');
-    html += `<path d="${path}" stroke="var(--ink)" stroke-width="1.2" fill="none"/>`;
-    items.forEach((d,i) => {
-      const cx = x(i), cy = y(d.pos);
-      // Salto memorable: dots en accent solo en los extremos del contraste 2→35 (primer y último).
-      const isExtreme = (i === 0 || i === items.length - 1);
-      const dotCol = isExtreme ? accent : 'var(--ink)';
-      html += `<circle cx="${cx}" cy="${cy}" r="4" fill="${dotCol}"/>`;
-      html += `<text class="lab-num" x="${cx}" y="${cy - 10}" text-anchor="middle" fill="var(--ink)" font-weight="500">${d.pos}</text>`;
-      html += `<text class="lab" x="${cx}" y="${m.t+innerH+18}" text-anchor="middle">${d.lab}</text>`;
-      // % «muy negativo»: 2 (primero) y 35 (último) en accent; el resto en ink-mute.
-      const mnCol = isExtreme ? accent : 'var(--ink-mute)';
-      const mnWeight = isExtreme ? 500 : 400;
-      html += `<text class="lab-num" x="${cx}" y="${m.t+innerH+34}" text-anchor="middle" fill="${mnCol}" font-style="italic" font-weight="${mnWeight}">${d.mn}</text>`;
-    });
-    html += `<line class="rangeframe" x1="${m.l}" y1="${m.t+innerH+4}" x2="${m.l+innerW}" y2="${m.t+innerH+4}"/>`;
-    html += `<text class="lab-axis" x="${m.l + innerW/2}" y="${m.t+innerH+52}" text-anchor="middle">conocimiento autopercibido de la IA (P35) · cifra inferior = % «muy negativo»</text>`;
-    html += `<text class="lab-axis" x="${m.l+innerW+10}" y="${y(items[items.length-1].pos)+4}">% valoración positiva</text>`;
-    const cxL = x(items.length-1);
-    html += `<text class="annot-accent" x="${cxL}" y="${m.t+innerH+50}" text-anchor="middle" font-weight="500">el «muy negativo» salta de 2 % a 35 %</text>`;
-    svg.innerHTML = html;
-  })();
+  sections.forEach((section) => sectionSpy.observe(section));
 
-  /* ----------------------------- Slide deck navigation ----------------------------- */
-  (function deck(){
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const total = slides.length;
-    const prev = document.getElementById('prev');
-    const next = document.getElementById('next');
-    const counter = document.getElementById('counter');
-    let idx = 0;
+  function tick(){
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    progress.style.width = (max > 0 ? (doc.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", tick, { passive:true });
+  window.addEventListener("resize", tick);
+  tick();
 
-    function render(){
-      slides.forEach((s,i) => s.classList.toggle('active', i === idx));
-      prev.disabled = (idx === 0);
-      next.disabled = (idx === total - 1);
-      counter.textContent = `${idx+1} / ${total}`;
-      const top = slides[idx].querySelector('.inner');
-      if (top) slides[idx].scrollTop = 0;
+  function countUp(el){
+    const target = Number(el.dataset.value);
+    const duration = 1100;
+    const start = performance.now();
+    const suffix = el.querySelector("small") ? "<small>%</small>" : "";
+    function frame(now){
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const value = (target * eased).toFixed(1).replace(".", ",");
+      el.innerHTML = value + suffix;
+      if (p < 1) requestAnimationFrame(frame);
     }
-    function go(i){ idx = Math.max(0, Math.min(total-1, i)); render(); }
-    function goTo(id){
-      const i = slides.findIndex(s => s.id === id);
-      if (i >= 0) go(i);
-    }
+    requestAnimationFrame(frame);
+  }
 
-    prev.addEventListener('click', () => go(idx - 1));
-    next.addEventListener('click', () => go(idx + 1));
-    document.querySelectorAll('a.goto').forEach(a => {
-      a.addEventListener('click', (e) => { e.preventDefault(); goTo(a.dataset.target); });
+  const counted = new WeakSet();
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !counted.has(entry.target)) {
+        counted.add(entry.target);
+        countUp(entry.target);
+      }
     });
-    window.addEventListener('keydown', (ev) => {
-      if (['ArrowRight','ArrowDown','PageDown',' '].includes(ev.key)){ go(idx+1); ev.preventDefault(); }
-      else if (['ArrowLeft','ArrowUp','PageUp'].includes(ev.key)){ go(idx-1); ev.preventDefault(); }
-      else if (ev.key === 'Home'){ go(0); ev.preventDefault(); }
-      else if (ev.key === 'End'){ go(total-1); ev.preventDefault(); }
-    });
-    render();
-  })();
+  }, { threshold: 0.5 });
+  document.querySelectorAll(".count").forEach((el) => countObserver.observe(el));
 </script>
 </body>
 </html>
